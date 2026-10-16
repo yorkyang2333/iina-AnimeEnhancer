@@ -317,13 +317,18 @@ if (iina.global && typeof iina.global.onMessage === "function") {
   });
 }
 
-// Detect lang changes made in pref.html when window regains focus
+// Detect preference changes made in pref.html when window regains focus
 event.on("iina.window-main.changed", (isMain) => {
   if (!isMain) return;
   const storedLang = preferences.get("lang") || "auto";
   if (storedLang !== currentLang) {
     console.log(`Anime4K: preference lang changed from ${currentLang} to ${storedLang}`);
     setLang(storedLang);
+  }
+  const storedAutoApply = preferences.get("autoApply") !== false;
+  if (storedAutoApply !== autoApply) {
+    console.log(`Anime4K: preference autoApply changed from ${autoApply} to ${storedAutoApply}`);
+    setAutoApply(storedAutoApply);
   }
 });
 
