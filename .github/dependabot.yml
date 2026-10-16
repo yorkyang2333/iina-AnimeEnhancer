@@ -1,0 +1,60 @@
+version: 2
+updates:
+  # 1. npm 生态（构建工具与开发依赖）
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "15:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+    groups:
+      # 将所有次要/补丁版本开发依赖合并为一个 PR
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      # 将核心构建相关包合并
+      parcel-bundle:
+        patterns:
+          - "*parcel*"
+
+  # 2. GitHub Actions 自动化工作流依赖
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "15:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(ci)"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # 3. Git Submodule (Anime4K 上游算法仓库)
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "friday"
+      time: "15:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: "chore(submodule)"
+    labels:
+      - "dependencies"
+      - "submodule"
