@@ -48,9 +48,27 @@
 
 ## 🚀 Installation
 
-1. Go to the [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) page and download the latest `anime4k.iinaplgz` package.
-2. Double-click the downloaded file to install it directly into IINA, or open IINA and navigate to `Preferences -> Plugins` to install manually.
-3. Open any anime video, show IINA's sidebar, switch to the **Anime4K** tab, and pick your quality tier and mode!
+<div align="center">
+  <img src="https://iina.io/img/blog/150-release/plugin-store.png" alt="IINA Plugin Store" width="600" />
+</div>
+
+### Method 1: Install via IINA Plugin Store (Recommended, IINA ≥ 1.5.0)
+
+1. Open **IINA** and navigate to **Settings** (`⌘,`) → **Plugins**.
+2. Click **Install Plugin...** (or the `+` button) to open the Plugin Store.
+3. Under **Community Plugins**, find **Anime4K** and click **Install**.
+   *(Alternatively, enter `yorkyang2333/iina-anime4k` in the GitHub URL field and click **Install**).*
+
+### Method 2: Manual / Offline Installation
+
+1. Download the latest `anime4k.iinaplgz` package from [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases).
+2. Open IINA, go to **Settings** (`⌘,`) → **Plugins**, and drag & drop the downloaded `anime4k.iinaplgz` file into the plugin list (or click `+` → **Install from File...**).
+
+---
+
+### Quick Start
+
+Open any anime video in IINA, show the sidebar, switch to the **Anime4K** tab, and select your preferred quality tier and preset mode!
 
 ## 🛠️ Build From Source
 

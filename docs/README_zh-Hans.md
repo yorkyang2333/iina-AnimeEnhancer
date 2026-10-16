@@ -48,9 +48,27 @@
 
 ## 🚀 安装与使用
 
+<div align="center">
+  <img src="https://iina.io/img/blog/150-release/plugin-store.png" alt="IINA 插件商店" width="600" />
+</div>
+
+### 方法一：通过 IINA 插件商店一键安装（推荐，IINA ≥ 1.5.0）
+
+1. 打开 **IINA**，进入 **设置** (`⌘,`) → **插件**。
+2. 点击 **安装插件...**（或 `+` 按钮）打开插件商店面板。
+3. 在左侧 **Community Plugins（社区插件）** 列表中找到 **Anime4K**，点击 **Install（安装）** 即可！
+   *（也可以直接在顶部的 GitHub URL 输入框中输入 `yorkyang2333/iina-anime4k` 并点击 Install）*。
+
+### 方法二：本地离线安装
+
 1. 前往 [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) 页面下载最新版本的 `anime4k.iinaplgz` 插件包。
-2. 双击下载的 `.iinaplgz` 文件自动安装到 IINA 中，或者打开 IINA 进入 `偏好设置 -> 插件` 进行手动安装。
-3. 打开任意动画视频，呼出 IINA 侧边栏，切换到 **Anime4K** 标签页，尽情选择您喜爱的画质档位与预设模式！
+2. 打开 IINA 进入 **设置** (`⌘,`) → **插件**，将下载的 `anime4k.iinaplgz` 文件拖拽至插件列表中（或点击 `+` → **从文件安装...**）。
+
+---
+
+### 快速上手
+
+打开任意动画视频，呼出 IINA 侧边栏，切换到 **Anime4K** 标签页，尽情选择您喜爱的画质档位与预设模式！
 
 ## 🛠️ 从源码构建
 
