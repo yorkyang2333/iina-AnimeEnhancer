@@ -84,7 +84,7 @@ function applyShader(mode, quality = currentQuality) {
       showOSD(t("osdOff"));
       currentMode = "off";
       saveState();
-      updateMenu();
+      rebuildMenus();
       sendSidebarState();
       return true;
     }
@@ -103,7 +103,7 @@ function applyShader(mode, quality = currentQuality) {
     currentMode = mode;
     currentQuality = quality;
     saveState();
-    updateMenu();
+    rebuildMenus();
     sendSidebarState();
     return true;
   } catch (error) {
@@ -129,94 +129,77 @@ function setQuality(quality) {
 
   currentQuality = quality;
   saveState();
-  updateMenu();
+  rebuildMenus();
   sendSidebarState();
 }
 
 function setAutoApply(value) {
   autoApply = value;
   saveState();
-  updateMenu();
+  rebuildMenus();
   sendSidebarState();
 }
 
 // 3. Menu System
-let presetMenuItems = [];
+let firstMenuBuild = true;
 
 function setLang(lang) {
   if (currentLang === lang && getLocale() === lang) return;
   currentLang = lang;
   setLocale(lang);
   saveState();
-  updateMenu();
+  rebuildMenus();
   sendSidebarState();
 }
 
-function updateMenu() {
+function rebuildMenus() {
+  if (!firstMenuBuild) {
+    menu.removeAllItems();
+  }
+
   const localizedModes = getModes();
-  presetMenuItems.forEach(item => {
-    item.selected = (currentMode === item.anime4kMode);
-    if (item.anime4kMode === "off") {
-      item.title = t("disableMenu");
-    } else {
-      const m = localizedModes.find(mod => mod.id === item.anime4kMode);
-      if (m) {
-        item.title = `${m.name} (${m.desc})`;
-      }
-    }
-  });
-  
-  qualityMenu.title = t("qualityTier");
-  fastQualityMenu.title = t("fastMenu");
-  fastQualityMenu.selected = (currentQuality === "fast");
-  hqQualityMenu.title = t("hqMenu");
-  hqQualityMenu.selected = (currentQuality === "hq");
-  
-  presetSubMenu.title = t("presetsMenu");
+  const bindings = ["1", "2", "3", "4", "5", "6"];
+
+  // Presets submenu
+  const presetSubMenu = menu.item(t("presetsMenu"));
+
+  const offMenu = menu.item(t("disableMenu"), () => applyShader("off"), { keyBinding: "0" });
   offMenu.selected = (currentMode === "off");
-  autoApplyMenu.title = t("autoApplyMenu");
+  presetSubMenu.addSubMenuItem(offMenu);
+  presetSubMenu.addSubMenuItem(menu.separator());
+
+  localizedModes.forEach((m, i) => {
+    const item = menu.item(`${m.name} (${m.desc})`, () => {
+      applyShader(m.id, currentQuality);
+    }, { keyBinding: bindings[i] });
+    item.selected = (currentMode === m.id);
+    presetSubMenu.addSubMenuItem(item);
+  });
+
+  // Quality submenu
+  const qualityMenu = menu.item(t("qualityTier"));
+  const fastQualityMenu = menu.item(t("fastMenu"), () => setQuality("fast"), { keyBinding: "7" });
+  fastQualityMenu.selected = (currentQuality === "fast");
+  const hqQualityMenu = menu.item(t("hqMenu"), () => setQuality("hq"), { keyBinding: "8" });
+  hqQualityMenu.selected = (currentQuality === "hq");
+  qualityMenu.addSubMenuItem(fastQualityMenu);
+  qualityMenu.addSubMenuItem(hqQualityMenu);
+
+  // Auto-apply toggle
+  const autoApplyMenu = menu.item(t("autoApplyMenu"), () => setAutoApply(!autoApply));
   autoApplyMenu.selected = autoApply;
+
+  menu.addItem(presetSubMenu);
+  menu.addItem(qualityMenu);
+  menu.addItem(autoApplyMenu);
+
+  if (!firstMenuBuild) {
+    menu.forceUpdate();
+  }
+  firstMenuBuild = false;
 }
 
-const presetMenus = getModes().map((m, i) => {
-  const bindings = ["1", "2", "3", "4", "5", "6"];
-  const item = menu.item(`${m.name} (${m.desc})`, () => {
-    applyShader(m.id, currentQuality);
-  }, { keyBinding: bindings[i] });
-  item.anime4kMode = m.id;
-  presetMenuItems.push(item);
-  return item;
-});
-
-const offMenu = menu.item(t("disableMenu"), () => applyShader("off"), { keyBinding: "0" });
-offMenu.anime4kMode = "off";
-presetMenuItems.push(offMenu);
-
-const qualityMenu = menu.item(t("qualityTier"));
-const fastQualityMenu = menu.item(t("fastMenu"), () => {
-  setQuality("fast");
-}, { keyBinding: "7" });
-const hqQualityMenu = menu.item(t("hqMenu"), () => {
-  setQuality("hq");
-}, { keyBinding: "8" });
-
-qualityMenu.addSubMenuItem(fastQualityMenu);
-qualityMenu.addSubMenuItem(hqQualityMenu);
-
-const autoApplyMenu = menu.item(t("autoApplyMenu"), () => {
-  setAutoApply(!autoApply);
-});
-
-const presetSubMenu = menu.item(t("presetsMenu"));
-presetSubMenu.addSubMenuItem(offMenu);
-presetSubMenu.addSubMenuItem(menu.separator());
-presetMenus.forEach(m => presetSubMenu.addSubMenuItem(m));
-
-menu.addItem(presetSubMenu);
-menu.addItem(qualityMenu);
-menu.addItem(autoApplyMenu);
-
-updateMenu();
+rebuildMenus();
 
 // 4. Sidebar System
 let sidebarLoaded = false;
@@ -302,16 +285,20 @@ event.on("iina.window-loaded", loadSidebar);
 
 // 5. Auto Apply
 event.on("iina.file-loaded", () => {
-  if (autoApply && currentMode !== "off") {
-    // Re-apply the shader for the new file
-    applyShader(currentMode, currentQuality);
-  } else if (!autoApply && currentMode !== "off") {
-    mpv.command("change-list", ["glsl-shaders", "clr", ""]);
-    currentMode = "off";
-    saveState();
-    updateMenu();
-    sendSidebarState();
-  }
+  // Defer to the next event-loop turn so IINA's native player/window
+  // lifecycle has fully settled before we touch menu proxies.
+  setTimeout(() => {
+    if (autoApply && currentMode !== "off") {
+      // Re-apply the shader for the new file
+      applyShader(currentMode, currentQuality);
+    } else if (!autoApply && currentMode !== "off") {
+      mpv.command("change-list", ["glsl-shaders", "clr", ""]);
+      currentMode = "off";
+      saveState();
+      rebuildMenus();
+      sendSidebarState();
+    }
+  }, 0);
 });
 
 // 6. Global preferences synchronization
@@ -330,13 +317,14 @@ if (iina.global && typeof iina.global.onMessage === "function") {
   });
 }
 
-setInterval(() => {
-  try { preferences.sync(); } catch (e) {}
+// Detect lang changes made in pref.html when window regains focus
+event.on("iina.window-main.changed", (isMain) => {
+  if (!isMain) return;
   const storedLang = preferences.get("lang") || "auto";
   if (storedLang !== currentLang) {
     console.log(`Anime4K: preference lang changed from ${currentLang} to ${storedLang}`);
     setLang(storedLang);
   }
-}, 1000);
+});
 
 console.log("Anime4K Plugin initialized.");
