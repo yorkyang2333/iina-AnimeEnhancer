@@ -55,14 +55,14 @@
 ### 方法 1: IINA プラグインストアからインストール（推奨、IINA ≥ 1.5.0）
 
 1. **IINA** を開き、**設定** (`⌘,`) → **プラグイン** に移動します。
-2. **GitHubからインストール…** ボタンをクリックしてプラグインストアを開きます。
+2. **プラグインを取得…**（Get Plugins…）ボタンをクリックしてプラグインストアを開きます。
 3. **Community Plugins** 一覧から **Anime4K** を見つけ、**Install** をクリックするだけで完了です！
    *（または上部の GitHub URL 入力欄に `yorkyang2333/iina-anime4k` と入力して Install をクリック）*。
 
 ### 方法 2: ローカル / オフラインインストール
 
 1. [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) ページから最新の `anime4k.iinaplgz` プラグインパッケージをダウンロードします。
-2. IINA の **設定** (`⌘,`) → **プラグイン** を開き、**パッケージをインストール…**（Install Package…）ボタンをクリックして、ダウンロードした `anime4k.iinaplgz` ファイルを選択すれば完了です。
+2. IINA の **設定** (`⌘,`) → **プラグイン** を開き、**ローカルパッケージをインストール…**（Install Local Package…）ボタンをクリックして、ダウンロードした `anime4k.iinaplgz` ファイルを選択すれば完了です。
 
 ---
 

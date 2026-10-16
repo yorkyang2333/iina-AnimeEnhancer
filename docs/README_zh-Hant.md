@@ -55,14 +55,14 @@
 ### 方法一：透過 IINA 外掛程式商店一鍵安裝（推薦，IINA ≥ 1.5.0）
 
 1. 打開 **IINA**，進入 **設定** (`⌘,`) → **外掛程式**。
-2. 點擊 **從 GitHub 安裝...** 按鈕打開外掛程式商店面板。
+2. 點擊 **Get Plugins…**（獲取外掛…）按鈕打開外掛程式商店面板。
 3. 在左側 **Community Plugins（社群外掛程式）** 清單中找到 **Anime4K**，點擊 **Install（安裝）** 即可！
    *（也可以直接在頂部的 GitHub URL 輸入框中輸入 `yorkyang2333/iina-anime4k` 並點擊 Install）*。
 
 ### 方法二：本機離線安裝
 
 1. 前往 [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) 頁面下載最新版本的 `anime4k.iinaplgz` 外掛程式包。
-2. 打開 IINA 進入 **設定** (`⌘,`) → **外掛程式**，點擊 **安裝外掛…**（Install Package…）按鈕，選擇下載的 `anime4k.iinaplgz` 檔案即可完成安裝。
+2. 打開 IINA 進入 **設定** (`⌘,`) → **外掛程式**，點擊 **Install Local Package…**（安裝本地外掛…）按鈕，選擇下載的 `anime4k.iinaplgz` 檔案即可完成安裝。
 
 ---
 
