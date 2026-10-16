@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2026-10-16
+
+### Bug Fixes & Improvements
+- **Menu Lifecycle & Teardown Stability**: Switched from mutate-in-place menu updates to a lifecycle-safe rebuild pattern (`menu.removeAllItems()` + `rebuildMenus()`), resolving native `JavascriptPluginMenuItem` crashes caused by stale proxy references.
+- **Event-Loop Turn Deferral**: Wrapped video load (`iina.file-loaded`) operations in `setTimeout(..., 0)` to allow native player and window lifecycle transitions to settle before executing shader commands.
+- **Teardown-Safe Preference Sync**: Replaced the interval-based preference polling timer with an event-driven `iina.window-main.changed` focus listener, eliminating teardown race condition crashes when reloading plugins or closing windows.
+- **Auto-Apply Focus Synchronization**: Added `autoApply` preference detection when returning from the settings window, immediately synchronizing the menu checkbox and sidebar state.
+- **Documentation Aligned with IINA 1.5.0**: Updated installation guides and screenshots across all 5 supported languages to highlight the new IINA 1.5.0 Plugin Store and accurate UI button names (`Get Plugins…` & `Install Local Package…`).
+
 ## [1.2.3] - 2026-07-04
 
 ### New Features & Changes

@@ -1,6 +1,6 @@
 {
   "name": "anime4k",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "IINA plugin for Anime4K",
   "main": "src/index.js",
   "scripts": {
