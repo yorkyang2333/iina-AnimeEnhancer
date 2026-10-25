@@ -5,8 +5,8 @@ These rules carry forward the Anime4K project's agent guidance, updated for Anim
 ## Project identity and descriptions
 
 - Use `Anime Enhancement Plugin for IINA` for the English project description in Info.json, package.json, the GitHub repository and plugin catalog listings. Use equivalent neutral wording in translated introductions. Keep specific engine support and limitations in feature documentation rather than making the short description depend on a fixed engine list or promising quality or real-time performance.
-- The repository is `yorkyang2333/iina-anime4k`, the identifier is `com.yorkyang2333.anime4k`, and the package is `animeenhancer.iinaplgz`. Keep ghRepo and author.url pointed at this repository.
-- Continue development in the original iina-anime4k repository and preserve the original plugin identifier and update channel. Do not deprecate this repository or direct users to a separate replacement plugin. Preserve saved Anime4K preferences during upgrades.
+- The repository is `yorkyang2333/iina-AnimeEnhancer`, the identifier is `com.yorkyang2333.AnimeEnhancer`, and the package is `animeenhancer.iinaplgz`. Keep ghRepo and author.url pointed at this repository.
+- Development continues in the original repository, now renamed to iina-AnimeEnhancer. The plugin identifier is now com.yorkyang2333.AnimeEnhancer. Explain that existing Anime4K installations require separate installation and preference setup; users should disable or uninstall the old plugin before enabling AnimeEnhancer.
 
 ## Development and architecture
 

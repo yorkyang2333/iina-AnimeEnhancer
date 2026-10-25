@@ -4,15 +4,15 @@
 
 **IINA 動漫畫質增強外掛**
 
-[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-anime4k/releases)
-[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-anime4k/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-anime4k/releases)
+[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
+[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-AnimeEnhancer/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
 [![IINA](https://img.shields.io/badge/IINA-%E2%89%A5%201.3.0-5865F2?style=for-the-badge&logo=apple&logoColor=white)](https://iina.io/)
 [![macOS](https://img.shields.io/badge/macOS-11.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macos/)
-[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-anime4k/stargazers)
+[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-AnimeEnhancer/stargazers)
 [![Powered by Anime4K](https://img.shields.io/badge/Powered%20by-Anime4K-FF4500?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/bloc97/Anime4K)
 [![Powered by AnimeJaNai](https://img.shields.io/badge/Powered%20by-AnimeJaNai-8A2BE2?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/the-database/mpv-AnimeJaNai)
-[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-anime4k/blob/main/src/i18n.js)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-anime4k/blob/main/LICENSE)
+[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/src/i18n.js)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/LICENSE)
 
 [**English**](../README.md) • [**简体中文**](README_zh-Hans.md) • [**繁體中文**](README_zh-Hant.md) • [**日本語**](README_ja.md) • [**Русский**](README_ru.md)
 
@@ -60,18 +60,18 @@
 
 1. 打開 **IINA**，進入 **設定** (`⌘,`) → **外掛程式**。
 2. 點擊 **Get Plugins…**（獲取外掛…）按鈕打開外掛程式商店面板。
-3. 在頂部的 GitHub URL 輸入框中輸入 `yorkyang2333/iina-anime4k`，點擊 **Install（安裝）**。
+3. 在頂部的 GitHub URL 輸入框中輸入 `yorkyang2333/iina-AnimeEnhancer`，點擊 **Install（安裝）**。
 
 ### 方法二：本機離線安裝
 
-1. 前往 [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) 頁面下載最新版本的 `animeenhancer.iinaplgz` 外掛程式包。
+1. 前往 [**Releases**](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases) 頁面下載最新版本的 `animeenhancer.iinaplgz` 外掛程式包。
 2. 打開 IINA 進入 **設定** (`⌘,`) → **外掛程式**，點擊 **Install Local Package…**（安裝本地外掛…）按鈕，選擇下載的 `animeenhancer.iinaplgz` 檔案即可完成安裝。
 
 ---
 
 ### 快速上手
 
-打開任意動畫影片，呼出 IINA 側邊欄，切換到 **AnimeEnhancer** 標籤頁，選擇引擎，再選擇您喜愛的畫質檔位與預設模式！首次使用預設關閉增強。外掛識別碼為 `com.yorkyang2333.anime4k`，沿用原 Anime4K 外掛的儲存庫、更新管道與已儲存的設定。切換引擎會保留 `glsl-shaders` 中的其他著色器；請避免同時啟用會重寫整個著色器列表的其他外掛。
+打開任意動畫影片，呼出 IINA 側邊欄，切換到 **AnimeEnhancer** 標籤頁，選擇引擎，再選擇您喜愛的畫質檔位與預設模式！首次使用預設關閉增強。外掛識別碼為 `com.yorkyang2333.AnimeEnhancer`，原儲存庫已重新命名為 iina-AnimeEnhancer。由於外掛識別碼變更，需要另外安裝，停用或解除安裝舊 Anime4K 外掛，並重新設定偏好。切換引擎會保留 `glsl-shaders` 中的其他著色器；請避免同時啟用會重寫整個著色器列表的其他外掛。
 
 ## 🛠️ 從原始碼建構
 
@@ -83,8 +83,8 @@
 
 ### 建構指令
 ```bash
-git clone https://github.com/yorkyang2333/iina-anime4k.git
-cd iina-anime4k
+git clone https://github.com/yorkyang2333/iina-AnimeEnhancer.git
+cd iina-AnimeEnhancer
 git submodule update --init --recursive
 npm install
 npm run pack

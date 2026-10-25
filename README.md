@@ -4,15 +4,15 @@
 
 **Anime Enhancement Plugin for IINA**
 
-[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-anime4k/releases)
-[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-anime4k/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-anime4k/releases)
+[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
+[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-AnimeEnhancer/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
 [![IINA](https://img.shields.io/badge/IINA-%E2%89%A5%201.3.0-5865F2?style=for-the-badge&logo=apple&logoColor=white)](https://iina.io/)
 [![macOS](https://img.shields.io/badge/macOS-11.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macos/)
-[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-anime4k/stargazers)
+[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-AnimeEnhancer/stargazers)
 [![Powered by Anime4K](https://img.shields.io/badge/Powered%20by-Anime4K-FF4500?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/bloc97/Anime4K)
 [![Powered by AnimeJaNai](https://img.shields.io/badge/Powered%20by-AnimeJaNai-8A2BE2?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/the-database/mpv-AnimeJaNai)
-[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-anime4k/blob/main/src/i18n.js)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-anime4k/blob/main/LICENSE)
+[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/src/i18n.js)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/LICENSE)
 
 [**English**](README.md) • [**简体中文**](docs/README_zh-Hans.md) • [**繁體中文**](docs/README_zh-Hant.md) • [**日本語**](docs/README_ja.md) • [**Русский**](docs/README_ru.md)
 
@@ -60,18 +60,18 @@ The table above describes **Anime4K**. **AnimeJaNai** runs preconverted V3.1 mod
 
 1. Open **IINA** and navigate to **Settings** (`⌘,`) → **Plugins**.
 2. Click **Get Plugins…** to open the Plugin Store.
-3. Enter `yorkyang2333/iina-anime4k` in the GitHub URL field and click **Install**.
+3. Enter `yorkyang2333/iina-AnimeEnhancer` in the GitHub URL field and click **Install**.
 
 ### Method 2: Manual / Offline Installation
 
-1. Download the latest `animeenhancer.iinaplgz` package from [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases).
+1. Download the latest `animeenhancer.iinaplgz` package from [**Releases**](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases).
 2. Open IINA, go to **Settings** (`⌘,`) → **Plugins**, click **Install Local Package…**, and select the downloaded `animeenhancer.iinaplgz` file.
 
 ---
 
 ### Quick Start
 
-Open any anime video in IINA, show the sidebar, switch to the **AnimeEnhancer** tab, choose an engine, and select your preferred quality tier and preset mode! Enhancement starts disabled. The identifier is `com.yorkyang2333.anime4k`; it continues the original Anime4K plugin in the same repository and retains its saved preferences. Switching engines preserves other shaders in `glsl-shaders`; avoid simultaneously enabling another plugin that rewrites the entire list.
+Open any anime video in IINA, show the sidebar, switch to the **AnimeEnhancer** tab, choose an engine, and select your preferred quality tier and preset mode! Enhancement starts disabled. The identifier is `com.yorkyang2333.AnimeEnhancer`; the repository has been renamed from iina-anime4k to iina-AnimeEnhancer. Because the plugin identifier has changed, install it separately, disable or uninstall the old Anime4K plugin, and configure your preferences again. Switching engines preserves other shaders in `glsl-shaders`; avoid simultaneously enabling another plugin that rewrites the entire list.
 
 ## 🛠️ Build From Source
 
@@ -83,8 +83,8 @@ Open any anime video in IINA, show the sidebar, switch to the **AnimeEnhancer** 
 
 ### Build Commands
 ```bash
-git clone https://github.com/yorkyang2333/iina-anime4k.git
-cd iina-anime4k
+git clone https://github.com/yorkyang2333/iina-AnimeEnhancer.git
+cd iina-AnimeEnhancer
 git submodule update --init --recursive
 npm install
 npm run pack

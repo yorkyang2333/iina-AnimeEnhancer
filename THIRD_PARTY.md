@@ -1,6 +1,6 @@
 # Third-party components
 
-AnimeEnhancer is based on [iina-anime4k](https://github.com/yorkyang2333/iina-anime4k) by yorkyang2333 and retains that plugin's GPL-3.0 license. Development continues in the original repository with the original plugin identifier.
+AnimeEnhancer is based on [iina-anime4k](https://github.com/yorkyang2333/iina-AnimeEnhancer) by yorkyang2333 and retains that plugin's GPL-3.0 license. Development continues in the original repository, renamed to iina-AnimeEnhancer.
 
 [Anime4K](https://github.com/bloc97/Anime4K) by bloc97 supplies the original GLSL shader chains. The `Anime4K` submodule is pinned to `7684e9586f8dcc738af08a1cdceb024cc184f426`. Its MIT license is included in installation packages as `licenses/Anime4K-MIT.txt`.
 

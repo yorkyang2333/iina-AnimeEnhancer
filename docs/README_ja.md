@@ -4,15 +4,15 @@
 
 **IINA 向けアニメ画質向上プラグイン**
 
-[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-anime4k/releases)
-[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-anime4k/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-anime4k/releases)
+[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
+[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-AnimeEnhancer/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
 [![IINA](https://img.shields.io/badge/IINA-%E2%89%A5%201.3.0-5865F2?style=for-the-badge&logo=apple&logoColor=white)](https://iina.io/)
 [![macOS](https://img.shields.io/badge/macOS-11.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macos/)
-[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-anime4k/stargazers)
+[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-AnimeEnhancer/stargazers)
 [![Powered by Anime4K](https://img.shields.io/badge/Powered%20by-Anime4K-FF4500?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/bloc97/Anime4K)
 [![Powered by AnimeJaNai](https://img.shields.io/badge/Powered%20by-AnimeJaNai-8A2BE2?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/the-database/mpv-AnimeJaNai)
-[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-anime4k/blob/main/src/i18n.js)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-anime4k/blob/main/LICENSE)
+[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/src/i18n.js)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/LICENSE)
 
 [**English**](../README.md) • [**简体中文**](README_zh-Hans.md) • [**繁體中文**](README_zh-Hant.md) • [**日本語**](README_ja.md) • [**Русский**](README_ru.md)
 
@@ -60,18 +60,18 @@
 
 1. **IINA** を開き、**設定** (`⌘,`) → **プラグイン** に移動します。
 2. **プラグインを取得…**（Get Plugins…）ボタンをクリックしてプラグインストアを開きます。
-3. GitHub URL 入力欄に `yorkyang2333/iina-anime4k` と入力し、**Install** をクリックします。
+3. GitHub URL 入力欄に `yorkyang2333/iina-AnimeEnhancer` と入力し、**Install** をクリックします。
 
 ### 方法 2: ローカル / オフラインインストール
 
-1. [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) ページから最新の `animeenhancer.iinaplgz` プラグインパッケージをダウンロードします。
+1. [**Releases**](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases) ページから最新の `animeenhancer.iinaplgz` プラグインパッケージをダウンロードします。
 2. IINA の **設定** (`⌘,`) → **プラグイン** を開き、**ローカルパッケージをインストール…**（Install Local Package…）ボタンをクリックして、ダウンロードした `animeenhancer.iinaplgz` ファイルを選択すれば完了です。
 
 ---
 
 ### 使い方
 
-アニメ動画を開き、IINA のサイドバーを表示して **AnimeEnhancer** タブに切り替え、エンジンとお好みの画質ティアー・モードを選択してください！初期状態では高画質化は無効です。識別子は `com.yorkyang2333.anime4k` で、従来の Anime4K プラグインと同じリポジトリと更新経路を使用し、保存済みの設定を引き継ぎます。エンジンを切り替えても `glsl-shaders` 内の他のシェーダーは保持されます。リスト全体を書き換える別のプラグインとの同時使用は避けてください。
+アニメ動画を開き、IINA のサイドバーを表示して **AnimeEnhancer** タブに切り替え、エンジンとお好みの画質ティアー・モードを選択してください！初期状態では高画質化は無効です。識別子は `com.yorkyang2333.AnimeEnhancer` で、元のリポジトリは iina-AnimeEnhancer に改名されました。識別子が変わったため、別途インストールし、旧 Anime4K プラグインを無効化または削除して設定し直してください。エンジンを切り替えても `glsl-shaders` 内の他のシェーダーは保持されます。リスト全体を書き換える別のプラグインとの同時使用は避けてください。
 
 ## 🛠️ ソースコードからのビルド
 
@@ -83,8 +83,8 @@
 
 ### ビルド手順
 ```bash
-git clone https://github.com/yorkyang2333/iina-anime4k.git
-cd iina-anime4k
+git clone https://github.com/yorkyang2333/iina-AnimeEnhancer.git
+cd iina-AnimeEnhancer
 git submodule update --init --recursive
 npm install
 npm run pack

@@ -4,7 +4,7 @@ Use `npm ci`, `npm test` and `npm run pack` for normal development. Python 3 is 
 
 The engine registry in `src/engines.js` owns engine-specific presets, the official AnimeJaNai Quality/Balanced/Performance labels and defaults. Keep playback state in `src/index.js` and shader ownership in `src/shader-controller.js`. A successful change should preserve unrelated mpv shaders, keep separate engine selections, and leave the last successful selection intact if mpv rejects a shader-list update. IINA's JavaScript command bridge does not report GPU shader compilation errors; inspect mpv logs when verifying new shaders.
 
-The plugin identifier is `com.yorkyang2333.anime4k`, with updates sourced from `yorkyang2333/iina-anime4k`. Keep `version` consistent in `Info.json`, `package.json` and the lockfile. For subsequent releases, increment `ghVersion` by exactly one from its existing integer value. Build outputs (`dist/`, `src/shaders-data.js`, `generated/`, `.iinaplugin` and `.iinaplgz`) are ignored. The preconverted AnimeJaNai profile shaders are versioned model resources and is deliberately checked in so ordinary builds and playback never need ONNX conversion.
+The plugin identifier is `com.yorkyang2333.AnimeEnhancer`, with updates sourced from `yorkyang2333/iina-AnimeEnhancer`. Keep `version` consistent in `Info.json`, `package.json` and the lockfile. For subsequent releases, increment `ghVersion` by exactly one from its existing integer value. Build outputs (`dist/`, `src/shaders-data.js`, `generated/`, `.iinaplugin` and `.iinaplgz`) are ignored. The preconverted AnimeJaNai profile shaders are versioned model resources and is deliberately checked in so ordinary builds and playback never need ONNX conversion.
 
 ## Regenerating the AnimeJaNai resource
 

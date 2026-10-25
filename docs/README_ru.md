@@ -4,15 +4,15 @@
 
 **Плагин улучшения аниме для IINA**
 
-[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-anime4k/releases)
-[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-anime4k/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-anime4k/releases)
+[![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
+[![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-AnimeEnhancer/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases)
 [![IINA](https://img.shields.io/badge/IINA-%E2%89%A5%201.3.0-5865F2?style=for-the-badge&logo=apple&logoColor=white)](https://iina.io/)
 [![macOS](https://img.shields.io/badge/macOS-11.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macos/)
-[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-anime4k/stargazers)
+[![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-AnimeEnhancer?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-AnimeEnhancer/stargazers)
 [![Powered by Anime4K](https://img.shields.io/badge/Powered%20by-Anime4K-FF4500?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/bloc97/Anime4K)
 [![Powered by AnimeJaNai](https://img.shields.io/badge/Powered%20by-AnimeJaNai-8A2BE2?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/the-database/mpv-AnimeJaNai)
-[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-anime4k/blob/main/src/i18n.js)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-anime4k/blob/main/LICENSE)
+[![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/src/i18n.js)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-AnimeEnhancer/blob/main/LICENSE)
 
 [**English**](../README.md) • [**简体中文**](README_zh-Hans.md) • [**繁體中文**](README_zh-Hant.md) • [**日本語**](README_ja.md) • [**Русский**](README_ru.md)
 
@@ -60,18 +60,18 @@
 
 1. Откройте **IINA** и перейдите в **Настройки** (`⌘,`) → **Плагины**.
 2. Нажмите кнопку **Скачать плагины…** (Get Plugins…), чтобы открыть окно магазина плагинов.
-3. Введите `yorkyang2333/iina-anime4k` в поле GitHub URL и нажмите **Install**.
+3. Введите `yorkyang2333/iina-AnimeEnhancer` в поле GitHub URL и нажмите **Install**.
 
 ### Способ 2: Ручная / офлайн установка
 
-1. Перейдите на страницу [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases) и скачайте актуальную версию пакета `animeenhancer.iinaplgz`.
+1. Перейдите на страницу [**Releases**](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases) и скачайте актуальную версию пакета `animeenhancer.iinaplgz`.
 2. Откройте IINA, перейдите в **Настройки** (`⌘,`) → **Плагины**, нажмите кнопку **Установить локальный пакет…** (Install Local Package…) и выберите скачанный файл `animeenhancer.iinaplgz`.
 
 ---
 
 ### Использование
 
-Откройте любое аниме, вызовите боковую панель IINA, перейдите на вкладку **AnimeEnhancer**, выберите движок, уровень качества и режим! По умолчанию улучшение отключено. Идентификатор — `com.yorkyang2333.anime4k`; плагин продолжает развитие Anime4K в прежнем репозитории, сохраняя канал обновлений и настройки. При переключении движка другие шейдеры в `glsl-shaders` сохраняются; избегайте одновременного использования плагинов, перезаписывающих весь список.
+Откройте любое аниме, вызовите боковую панель IINA, перейдите на вкладку **AnimeEnhancer**, выберите движок, уровень качества и режим! По умолчанию улучшение отключено. Идентификатор — `com.yorkyang2333.AnimeEnhancer`; исходный репозиторий переименован в iina-AnimeEnhancer. Из-за смены идентификатора установите плагин отдельно, отключите или удалите старый Anime4K и настройте параметры заново. При переключении движка другие шейдеры в `glsl-shaders` сохраняются; избегайте одновременного использования плагинов, перезаписывающих весь список.
 
 ## 🛠️ Сборка из исходного кода
 
@@ -83,8 +83,8 @@
 
 ### Команды для сборки
 ```bash
-git clone https://github.com/yorkyang2333/iina-anime4k.git
-cd iina-anime4k
+git clone https://github.com/yorkyang2333/iina-AnimeEnhancer.git
+cd iina-AnimeEnhancer
 git submodule update --init --recursive
 npm install
 npm run pack

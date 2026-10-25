@@ -156,7 +156,7 @@ test("all engine shader chains and preconverted model provenance are valid", () 
   const info = JSON.parse(fs.readFileSync("Info.json", "utf8"));
   const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
   assert.equal(info.version, pkg.version);
-  assert.equal(info.identifier, "com.yorkyang2333.anime4k");
+  assert.equal(info.identifier, "com.yorkyang2333.AnimeEnhancer");
 });
 
 

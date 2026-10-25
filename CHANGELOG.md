@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1] - 2026-10-25
+
+### New Features & Changes
+- Rename the original repository from iina-anime4k to iina-AnimeEnhancer while retaining its history.
+- Update repository links, installation instructions and plugin metadata to the new repository name.
+- Change the plugin identifier to `com.yorkyang2333.AnimeEnhancer`. Existing Anime4K users must install AnimeEnhancer separately, disable or uninstall the old plugin and configure preferences again.
+
 ## [1.3.0] - 2026-10-25
 
 ### New Features & Changes

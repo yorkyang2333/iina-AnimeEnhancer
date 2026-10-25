@@ -1,6 +1,6 @@
 {
   "name": "animeenhancer",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Anime Enhancement Plugin for IINA",
   "main": "src/index.js",
   "scripts": {
@@ -13,9 +13,9 @@
   "author": "yorkyang2333 <yangyork097@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yorkyang2333/iina-anime4k.git"
+    "url": "git+https://github.com/yorkyang2333/iina-AnimeEnhancer.git"
   },
-  "homepage": "https://github.com/yorkyang2333/iina-anime4k#readme",
+  "homepage": "https://github.com/yorkyang2333/iina-AnimeEnhancer#readme",
   "license": "GPL-3.0",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",

@@ -1,14 +1,14 @@
 {
   "name": "AnimeEnhancer",
-  "identifier": "com.yorkyang2333.anime4k",
-  "version": "1.3.0",
-  "ghRepo": "yorkyang2333/iina-anime4k",
-  "ghVersion": 9,
+  "identifier": "com.yorkyang2333.AnimeEnhancer",
+  "version": "1.3.1",
+  "ghRepo": "yorkyang2333/iina-AnimeEnhancer",
+  "ghVersion": 10,
   "description": "Anime Enhancement Plugin for IINA",
   "author": {
     "name": "yorkyang2333",
     "email": "yangyork097@gmail.com",
-    "url": "https://github.com/yorkyang2333/iina-anime4k"
+    "url": "https://github.com/yorkyang2333/iina-AnimeEnhancer"
   },
   "entry": "dist/index.js",
   "globalEntry": "dist/global.js",
