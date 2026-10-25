@@ -1,3 +1,5 @@
+⚠️ **非推奨化のお知らせ：** Anime4K for IINA は近日中に非推奨となります。Anime4K と実験的な AnimeJaNai エンジンを備えた [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer) へ移行してください。[最新版](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)をインストールし、シェーダー制御の競合を避けるため、旧プラグインを無効化または削除してから AnimeEnhancer を有効にしてください。識別子が異なるため、別途インストールして設定し直す必要があります。
+
 <div align="center">
 
 # 🌸 Anime4K for IINA

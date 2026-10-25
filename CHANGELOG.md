@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.5] - 2026-10-25
+
+### New Features & Changes
+- Announce the upcoming deprecation of Anime4K for IINA and recommend migrating to [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer).
+- Add migration guidance to all five README translations and update the plugin description.
+- AnimeEnhancer includes Anime4K and experimental AnimeJaNai support under a separate plugin identifier. Install it separately, disable or uninstall the old plugin before enabling it, and configure your preferences again.
+
 ## [1.2.4] - 2026-10-16
 
 ### Bug Fixes & Improvements

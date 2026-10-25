@@ -1,3 +1,5 @@
+⚠️ **即将弃用：** Anime4K for IINA 即将 deprecated，请迁移至 [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer)。新插件包含 Anime4K 和实验性的 AnimeJaNai 引擎。安装[最新版本](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)后，请先停用或卸载旧插件，再启用 AnimeEnhancer，避免着色器控制冲突。新插件使用独立标识符，需要单独安装并重新设置偏好。
+
 <div align="center">
 
 # 🌸 Anime4K for IINA

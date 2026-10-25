@@ -1,7 +1,7 @@
 {
   "name": "anime4k",
-  "version": "1.2.4",
-  "description": "IINA plugin for Anime4K",
+  "version": "1.2.5",
+  "description": "Soon to be deprecated. Please migrate to AnimeEnhancer for IINA: https://github.com/yorkyang2333/iina-AnimeEnhancer",
   "main": "src/index.js",
   "scripts": {
     "serve-sidebar": "parcel serve ui/sidebar/sidebar.html --dist-dir dist/ui/sidebar",
