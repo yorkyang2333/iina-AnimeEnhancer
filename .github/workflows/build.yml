@@ -36,10 +36,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.x'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Test runtime
+        run: npm test
 
       - name: Build and pack plugin
         run: npm run pack
@@ -47,13 +50,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: anime4k-plugin
-          path: anime4k.iinaplgz
+          name: animeenhancer-plugin
+          path: animeenhancer.iinaplgz
           if-no-files-found: error
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3
         with:
-          files: anime4k.iinaplgz
+          files: animeenhancer.iinaplgz
           generate_release_notes: true

@@ -1,13 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-## [1.2.5] - 2026-10-25
+## [1.3.0] - 2026-10-25
 
 ### New Features & Changes
-- Announce the upcoming deprecation of Anime4K for IINA and recommend migrating to [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer).
-- Add migration guidance to all five README translations and update the plugin description.
-- AnimeEnhancer includes Anime4K and experimental AnimeJaNai support under a separate plugin identifier. Install it separately, disable or uninstall the old plugin before enabling it, and configure your preferences again.
+- Rename the plugin to AnimeEnhancer and add an enhancement engine registry while retaining the original repository, plugin identifier and update channel.
+- Preserve all Anime4K presets, both quality tiers, multilingual UI, shortcuts and auto-apply behavior.
+- Add experimental AnimeJaNai HD V3.1 2× upscaling using bundled, preconverted model weights and mpv GLSL passes on macOS.
+- Use the official AnimeJaNai Quality, Balanced and Performance profile names and 1/2/3 shortcuts. Quality and Balanced currently share the V3.1 Balanced HD model; Performance uses V3.1 Performance.
+- Vendor AnimeJaNai through the pinned `feat/iina-glsl` submodule.
+- Remember presets separately for each engine and preserve unrelated mpv shaders when switching or disabling enhancement.
+- Package upstream attribution and model licenses with the plugin. AnimeJaNai weights retain CC BY-NC-SA 4.0.
+- Upgrade the existing Anime4K installation in place and retain its saved preferences.
+- AnimeJaNai remains experimental, can use substantial GPU memory and does not guarantee real-time HD playback.
+
+All notable changes to this project will be documented in this file.
 
 ## [1.2.4] - 2026-10-16
 

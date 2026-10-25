@@ -1,17 +1,8 @@
-> [!WARNING]
-> ## ⚠️ Anime4K for IINA will soon be deprecated
->
-> ### [➡️ Get AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)
->
-> ⚠️ **Deprecation notice:** Anime4K for IINA will soon be deprecated. Please migrate to [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer), which includes Anime4K and the experimental AnimeJaNai engine. Install the [latest release](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest), then disable or uninstall this old plugin before enabling AnimeEnhancer to avoid conflicting shader control. AnimeEnhancer uses a separate plugin identifier; install it separately and configure your preferences again.
-
----
-
 <div align="center">
 
-# 🌸 Anime4K for IINA
+# 🌸 AnimeEnhancer for IINA
 
-**High-Quality Real-Time Anime Upscaling Plugin for macOS IINA**
+**Anime Enhancement Plugin for IINA**
 
 [![Release](https://img.shields.io/github/v/release/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FF69B4)](https://github.com/yorkyang2333/iina-anime4k/releases)
 [![Downloads](https://img.shields.io/github/downloads/yorkyang2333/iina-anime4k/total?style=for-the-badge&logo=github&color=00d1b2)](https://github.com/yorkyang2333/iina-anime4k/releases)
@@ -19,6 +10,7 @@
 [![macOS](https://img.shields.io/badge/macOS-11.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white)](https://www.apple.com/macos/)
 [![Stars](https://img.shields.io/github/stars/yorkyang2333/iina-anime4k?style=for-the-badge&logo=github&color=FFD700)](https://github.com/yorkyang2333/iina-anime4k/stargazers)
 [![Powered by Anime4K](https://img.shields.io/badge/Powered%20by-Anime4K-FF4500?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/bloc97/Anime4K)
+[![Powered by AnimeJaNai](https://img.shields.io/badge/Powered%20by-AnimeJaNai-8A2BE2?style=for-the-badge&logo=opengl&logoColor=white)](https://github.com/the-database/mpv-AnimeJaNai)
 [![Languages](https://img.shields.io/badge/Languages-54%20Locales-32CD32?style=for-the-badge&logo=googletranslate&logoColor=white)](https://github.com/yorkyang2333/iina-anime4k/blob/main/src/i18n.js)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](https://github.com/yorkyang2333/iina-anime4k/blob/main/LICENSE)
 
@@ -28,18 +20,19 @@
 
 ---
 
-**Anime4K for IINA** is a modern macOS plugin that packages the acclaimed [Anime4K](https://github.com/bloc97/Anime4K) real-time GLSL shaders and embeds them seamlessly into [IINA](https://iina.io/). It installs the bundled shaders into the plugin data directory on first launch, dynamically managing mpv's `glsl-shaders` list on the fly—no manual `mpv.conf` configuration or script editing required!
+**AnimeEnhancer for IINA** is an anime enhancement plugin for [IINA](https://iina.io/).
 
 ## ✨ Features
 
-* 🚀 **Native IINA Workflow**: Control everything via the dedicated Anime4K sidebar tab, macOS top menu bar, and native IINA OSD feedback without leaving playback.
-* 🌐 **Global 54-Language Support**: Fully aligned with official IINA's internationalization roster, featuring native UI translations and dynamic system locale detection.
-* ⚖️ **Two Quality Tiers**:
+* 🚀 **Native IINA Workflow**: Control everything via the dedicated AnimeEnhancer sidebar tab, macOS top menu bar, and native IINA OSD feedback without leaving playback.
+* 🧩 **Two Enhancement Engines**: Switch between Anime4K and experimental AnimeJaNai, with separate saved settings for each engine. AnimeJaNai provides **Quality / Balanced / Performance** profiles with **2×** upscaling.
+* 🌐 **Global 54-Language Support**: Aligned with official IINA's internationalization roster, with dynamic system locale detection. New engine descriptions are translated into English, Simplified Chinese, Traditional Chinese, Japanese and Russian, with English fallback for other locales.
+* ⚖️ **Two Quality Tiers (Anime4K)**:
   * **Fast**: Lightweight & efficient, optimized for standard Apple Silicon chips and Intel Macs.
   * **HQ**: Advanced multi-pass shader variants for high-end GPUs (M-series Pro/Max/Ultra chips).
-* 🎛️ **Six Preset Chains**: Switch between **Mode A, B, C, A+A, B+B, and C+A** instantly during video playback.
+* 🎛️ **Six Preset Chains (Anime4K)**: Switch between **Mode A, B, C, A+A, B+B, and C+A** instantly during video playback.
 * 🔄 **Smart Auto-Apply**: Automatically restores your preferred scaling mode and quality tier whenever a new video loads.
-* ⌨️ **Menu Keybindings**: Quick keyboard shortcuts (`1`–`6` for presets, `0` to disable, `7` for Fast tier, and `8` for HQ tier).
+* ⌨️ **Menu Keybindings**: Quick keyboard shortcuts (`1`–`6` for Anime4K presets, `7` for Fast, `8` for HQ; `1` / `2` / `3` for AnimeJaNai Quality / Balanced / Performance; `0` to disable).
 
 ## 📖 Preset Guide
 
@@ -55,6 +48,8 @@
 > [!TIP]
 > Start with **Fast + Mode A** for most anime videos. If your Mac has extra GPU headroom, switch to **HQ** or one of the double-pass modes (`A+A`, `B+B`, `C+A`). If the image appears over-sharpened, noisy, or introduces ringing artifacts, step back to Mode B or Mode C.
 
+The table above describes **Anime4K**. **AnimeJaNai** runs preconverted V3.1 models through IINA's OpenGL renderer: HD Quality and Balanced currently share the V3.1 Balanced model, while Performance uses V3.1 Performance. The separate SD chain and resolution-aware model selection from the Windows player are not yet ported. Shaders and weights are bundled; normal builds and playback do not convert ONNX or require a Python inference environment or the Windows player. The GPU driver compiles GLSL on first use. This backend is experimental, can use substantial GPU memory and does not guarantee real-time HD playback.
+
 ## 🚀 Installation
 
 <div align="center">
@@ -65,19 +60,18 @@
 
 1. Open **IINA** and navigate to **Settings** (`⌘,`) → **Plugins**.
 2. Click **Get Plugins…** to open the Plugin Store.
-3. Under **Community Plugins**, find **Anime4K** and click **Install**.
-   *(Alternatively, enter `yorkyang2333/iina-anime4k` in the GitHub URL field and click **Install**).*
+3. Enter `yorkyang2333/iina-anime4k` in the GitHub URL field and click **Install**.
 
 ### Method 2: Manual / Offline Installation
 
-1. Download the latest `anime4k.iinaplgz` package from [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases).
-2. Open IINA, go to **Settings** (`⌘,`) → **Plugins**, click **Install Local Package…**, and select the downloaded `anime4k.iinaplgz` file.
+1. Download the latest `animeenhancer.iinaplgz` package from [**Releases**](https://github.com/yorkyang2333/iina-anime4k/releases).
+2. Open IINA, go to **Settings** (`⌘,`) → **Plugins**, click **Install Local Package…**, and select the downloaded `animeenhancer.iinaplgz` file.
 
 ---
 
 ### Quick Start
 
-Open any anime video in IINA, show the sidebar, switch to the **Anime4K** tab, and select your preferred quality tier and preset mode!
+Open any anime video in IINA, show the sidebar, switch to the **AnimeEnhancer** tab, choose an engine, and select your preferred quality tier and preset mode! Enhancement starts disabled. The identifier is `com.yorkyang2333.anime4k`; it continues the original Anime4K plugin in the same repository and retains its saved preferences. Switching engines preserves other shaders in `glsl-shaders`; avoid simultaneously enabling another plugin that rewrites the entire list.
 
 ## 🛠️ Build From Source
 
@@ -85,7 +79,7 @@ Open any anime video in IINA, show the sidebar, switch to the **Anime4K** tab, a
 * **macOS** with [IINA](https://iina.io/) installed
 * **Node.js** & **npm**
 * **Python 3**
-* **Git** (with submodule support for upstream Anime4K shaders)
+* **Git** (with submodule support for upstream Anime4K and AnimeJaNai resources)
 
 ### Build Commands
 ```bash
@@ -95,19 +89,23 @@ git submodule update --init --recursive
 npm install
 npm run pack
 ```
-Once the build finishes, the packaged plugin `anime4k.iinaplgz` will be generated in the project root directory.
+Once the build finishes, the packaged plugin `animeenhancer.iinaplgz` will be generated in the project root directory.
 
 ## 🤝 Contributing & Development
 
-We welcome pull requests and contributions from the community! Please read our [**Contributing Guide (CONTRIBUTING.md)**](CONTRIBUTING.md) for detailed guidelines on local development setup, versioning conventions (`ghVersion`), and IINA's automated release architecture.
+We welcome pull requests and contributions from the community! Please read our [**Contributing Guide (CONTRIBUTING.md)**](CONTRIBUTING.md) for detailed guidelines on local development setup, versioning conventions (`ghVersion`), and AnimeJaNai model conversion.
 
 ### Core Architecture
 * `src/index.js` — The core plugin runtime (shader installation, state persistence, menu synchronization, OSD messaging, and auto-apply logic).
+* `src/engines.js` — Engine registry, controls, defaults and shader chains.
+* `src/shader-controller.js` — Shader ownership management that preserves unrelated shaders.
 * `src/shaders.js` — Configuration and mapping for Fast and HQ shader chains.
 * `src/i18n.js` — Full 54-language native localization dictionary and system locale detection engine.
 * `ui/sidebar/` — Web UI components and styling for the IINA sidebar.
-* `build-shaders.py` — Pre-compilation script that processes `Anime4K/glsl/**/*.glsl` and generates `src/shaders-data.js`.
+* `build-shaders.py` — Bundles Anime4K shaders and preconverted AnimeJaNai shaders into `src/shaders-data.js`.
 * `generate-pref.py` — Generates the static multilingual preferences interface (`pref.html`).
+
+The plugin source is GPL-3.0. Anime4K shaders are MIT-licensed; AnimeJaNai model weights and their converted form retain CC BY-NC-SA 4.0. See [THIRD_PARTY.md](THIRD_PARTY.md) for attribution and source revisions.
 
 ## 🤝 Community & Links
 

@@ -1,189 +1,69 @@
 import "../shared.scss";
 import "./sidebar.scss";
+import { t, setLocale } from "../../src/i18n";
+import { engines } from "../../src/engines";
 
-import { t, setLocale, getLocale, getModes } from "../../src/i18n";
-
-const sidebarMessages = {
-  ready: "anime4k:ready",
-  applyMode: "anime4k:applyMode",
-  setQuality: "anime4k:setQuality",
-  setAutoApply: "anime4k:setAutoApply",
-  state: "anime4k:state"
-};
-
-const legacySidebarMessages = {
-  ready: "ready",
-  apply: "apply",
-  toggleAutoApply: "toggleAutoApply",
-  state: "state"
-};
-
-let currentState = { mode: "off", quality: "fast", autoApply: true, lang: "auto" };
+const prefix = "animeenhancer:";
+let state = { engine: "anime4k", mode: "off", quality: "fast", autoApply: true, lang: "auto" };
 let hasState = false;
-let hasModernState = false;
-let readyTimer = null;
-let readyAttempts = 0;
-let activeProtocol = "modern";
+let readyTimer;
+const escape = (value) => String(value || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-iina.onMessage(sidebarMessages.state, (data) => {
-  hasModernState = true;
-  activeProtocol = "modern";
-  currentState = data;
-  if (data && data.lang) {
-    setLocale(data.lang);
-  }
+iina.onMessage(prefix + "state", (data) => {
+  if (!data || !engines[data.engine]) return;
+  state = data;
+  setLocale(data.lang);
   hasState = true;
-  stopReadyRetry();
+  clearInterval(readyTimer);
   render();
 });
-
-iina.onMessage(legacySidebarMessages.state, (data) => {
-  if (!hasModernState) {
-    activeProtocol = "legacy";
-  }
-
-  currentState = data;
-  if (data && data.lang) {
-    setLocale(data.lang);
-  }
-  hasState = true;
-  stopReadyRetry();
-  render();
-});
-
-function applyMode(id) {
-  if (activeProtocol === "legacy") {
-    iina.postMessage(legacySidebarMessages.apply, { mode: id, quality: currentState.quality });
-    return;
-  }
-
-  iina.postMessage(sidebarMessages.applyMode, { mode: id });
-}
-
-function setQuality(q) {
-  if (activeProtocol === "legacy") {
-    iina.postMessage(legacySidebarMessages.apply, { mode: currentState.mode, quality: q });
-    return;
-  }
-
-  iina.postMessage(sidebarMessages.setQuality, { quality: q });
-}
-
-function toggleAutoApply(val) {
-  if (activeProtocol === "legacy") {
-    iina.postMessage(legacySidebarMessages.toggleAutoApply, { autoApply: val });
-    return;
-  }
-
-  iina.postMessage(sidebarMessages.setAutoApply, { autoApply: val });
-}
 
 function render() {
   const app = document.getElementById("app");
   if (!app) return;
-  
-  const currentModes = getModes();
-  const modeCards = currentModes.map(m => `
-    <div class="mode-card ${currentState.mode === m.id ? 'active' : ''}" data-mode="${m.id}">
-      <h3>${m.name}</h3>
-      <p>${m.desc}</p>
-    </div>
-  `).join("");
-
-  const html = `
+  const engine = engines[state.engine];
+  app.innerHTML = `
     <div class="sidebar-container">
-      <h2>${t("pluginName")}</h2>
+      <h2>AnimeEnhancer</h2>
       <p class="subtitle">${t("subtitle")}</p>
-      
-      <div class="section">
-        <label class="section-title">${t("qualityTier")}</label>
-        <div class="button-group">
-          <button class="${currentState.quality === 'fast' ? 'active' : ''}" data-quality="fast">${t("fast")}</button>
-          <button class="${currentState.quality === 'hq' ? 'active' : ''}" data-quality="hq">${t("hq")}</button>
+      <fieldset aria-busy="${hasState ? "false" : "true"}">
+        <div class="section">
+          <label class="section-title">${t("engine")}</label>
+          <div class="button-group">${Object.values(engines).map((item) => `<button data-engine="${item.id}" class="${item.id === state.engine ? "active" : ""}" aria-pressed="${item.id === state.engine}">${item.name}</button>`).join("")}</div>
+          <p class="engine-description">${engine.description()}</p>
         </div>
-      </div>
-      
-      <div class="section">
-        <label class="section-title">${t("presets")}</label>
-        <div class="modes-grid">
-          ${modeCards}
+        <div class="section">
+          <label class="section-title">${t("qualityTier")}</label>
+          <div class="button-group">${engine.qualities.map((q) => `<button data-quality="${q}" class="${q === state.quality ? "active" : ""}" aria-pressed="${q === state.quality}">${engine.qualityName(q)}</button>`).join("")}</div>
         </div>
-      </div>
-      
-      <div class="section">
-        <button class="off-button" data-mode="off">${t("disable")}</button>
-      </div>
-      
-      <div class="section options-section">
-        <label class="toggle-label">
-          <input type="checkbox" id="auto-apply-check" ${currentState.autoApply ? 'checked' : ''}>
-          <span>${t("autoApply")}</span>
-        </label>
-      </div>
-      
-    </div>
-  `;
-  
-  app.innerHTML = html;
-
-  app.querySelectorAll("[data-mode]").forEach((el) => {
-    el.addEventListener("click", () => {
-      applyMode(el.getAttribute("data-mode"));
-    });
+        <div class="section">
+          <label class="section-title">${t("presets")}</label>
+          <div class="modes-grid">${engine.modes().map((m) => `<button class="mode-card ${m.id === state.mode ? "active" : ""}" data-mode="${m.id}" aria-pressed="${m.id === state.mode}"><span class="mode-name">${m.name}</span><span class="mode-description">${m.desc}</span></button>`).join("")}</div>
+        </div>
+        <div class="section"><button class="off-button" data-mode="off">${t("disable")}</button></div>
+        <div class="section options-section"><label class="toggle-label"><input type="checkbox" id="auto-apply-check" ${state.autoApply ? "checked" : ""}><span>${t("autoApply")}</span></label></div>
+      </fieldset>
+      <p role="alert" class="error-message">${escape(state.error)}</p>
+    </div>`;
+  const bind = (attr, message, key) => app.querySelectorAll(`[${attr}]`).forEach((el) => {
+    el.addEventListener("click", () => iina.postMessage(prefix + message, { [key]: el.getAttribute(attr) }));
   });
-
-  app.querySelectorAll("[data-quality]").forEach((el) => {
-    el.addEventListener("click", () => {
-      setQuality(el.getAttribute("data-quality"));
-    });
+  bind("data-engine", "setEngine", "engine");
+  bind("data-quality", "setQuality", "quality");
+  bind("data-mode", "applyMode", "mode");
+  document.getElementById("auto-apply-check").addEventListener("change", (event) => {
+    iina.postMessage(prefix + "setAutoApply", { autoApply: event.target.checked });
   });
-
-  const checkbox = document.getElementById("auto-apply-check");
-  if (checkbox) {
-    checkbox.addEventListener("change", (e) => {
-      toggleAutoApply(e.target.checked);
-    });
-  }
 }
 
-function postReady() {
-  iina.postMessage(sidebarMessages.ready, {});
-  iina.postMessage(legacySidebarMessages.ready, {});
-}
-
-function stopReadyRetry() {
-  if (readyTimer) {
-    clearInterval(readyTimer);
-    readyTimer = null;
-  }
-}
-
-function startReadyRetry() {
-  postReady();
+function init() {
+  render();
+  iina.postMessage(prefix + "ready", {});
+  let attempts = 0;
   readyTimer = setInterval(() => {
-    if (hasState || readyAttempts >= 10) {
-      stopReadyRetry();
-      return;
-    }
-
-    readyAttempts += 1;
-    postReady();
+    if (hasState || ++attempts > 10) return clearInterval(readyTimer);
+    iina.postMessage(prefix + "ready", {});
   }, 250);
 }
-
-// Avoid the timing race condition completely!
-var hasInit = false;
-function init() {
-  if (hasInit) return;
-  hasInit = true;
-  render();
-  startReadyRetry();
-}
-
-// In case it's in body, fire immediately if DOM is already parsed
-if (document.readyState === "interactive" || document.readyState === "complete") {
-  init();
-} else {
-  // Otherwise wait for DOMContentLoaded
-  document.addEventListener("DOMContentLoaded", init);
-}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();

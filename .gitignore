@@ -125,5 +125,10 @@ out
 *.css.map
 dist/
 src/shaders-data.js
-anime4k.iinaplugin/
+animeenhancer.iinaplugin/
 *.iinaplgz
+.venv/
+generated/
+__pycache__/
+
+anime4k.iinaplugin/

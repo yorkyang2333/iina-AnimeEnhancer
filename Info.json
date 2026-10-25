@@ -1,10 +1,10 @@
 {
-  "name": "Anime4K",
+  "name": "AnimeEnhancer",
   "identifier": "com.yorkyang2333.anime4k",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "ghRepo": "yorkyang2333/iina-anime4k",
-  "ghVersion": 8,
-  "description": "Soon to be deprecated. Please migrate to AnimeEnhancer for IINA: https://github.com/yorkyang2333/iina-AnimeEnhancer",
+  "ghVersion": 9,
+  "description": "Anime Enhancement Plugin for IINA",
   "author": {
     "name": "yorkyang2333",
     "email": "yangyork097@gmail.com",
@@ -19,12 +19,14 @@
     "file-system"
   ],
   "sidebarTab": {
-    "name": "Anime4K"
+    "name": "AnimeEnhancer"
   },
   "preferenceDefaults": {
     "quality": "fast",
     "mode": "off",
     "autoApply": true,
-    "lang": "auto"
+    "lang": "auto",
+    "engine": "anime4k",
+    "engineSettings": {}
   }
 }

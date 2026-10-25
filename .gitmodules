@@ -1,4 +1,7 @@
 [submodule "Anime4K"]
 	path = Anime4K
 	url = https://github.com/bloc97/Anime4K.git
-	branch = master
+[submodule "AnimeJaNai"]
+	path = AnimeJaNai
+	url = https://github.com/yorkyang2333/mpv-AnimeJaNai.git
+	branch = feat/iina-glsl

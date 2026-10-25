@@ -1,335 +1,179 @@
-import { shadersData } from "./shaders-data";
-import { presets } from "./shaders";
-import { t, setLocale, getLocale, getModes } from "./i18n";
+import { shadersData, shadersVersion } from "./shaders-data";
+import { engines, engineState } from "./engines";
+import { createShaderController } from "./shader-controller";
+import { t, setLocale } from "./i18n";
 
-const { core, event, menu, mpv, console, file, utils, preferences, sidebar, overlay } = iina;
-
-const sidebarMessages = {
-  ready: "anime4k:ready",
-  applyMode: "anime4k:applyMode",
-  setQuality: "anime4k:setQuality",
-  setAutoApply: "anime4k:setAutoApply",
-  state: "anime4k:state"
-};
-
-const legacySidebarMessages = {
-  ready: "ready",
-  apply: "apply",
-  toggleAutoApply: "toggleAutoApply",
-  state: "state"
-};
-
-console.log("Anime4K Plugin is loading...");
-
-// 1. Install shaders to @data/ directory on startup
-function installShaders() {
-  const testShader = "Anime4K_Clamp_Highlights.glsl";
-  const testPath = utils.resolvePath(`@data/${testShader}`);
-  
-  if (!file.exists(testPath)) {
-    console.log("Installing shaders to @data/...");
-    for (const [name, content] of Object.entries(shadersData)) {
-      const p = utils.resolvePath(`@data/${name}`);
-      file.write(p, content);
-    }
-    console.log("Shaders installed successfully.");
-  }
-}
-
-installShaders();
-
-// 2. State Management
-let currentQuality = preferences.get("quality") || "fast"; // "fast" or "hq"
-let currentMode = preferences.get("mode") || "off"; // "A", "B", "off", etc
+const { core, event, menu, mpv, console, file, utils, preferences, sidebar } = iina;
+const prefix = "animeenhancer:";
+const resolvePath = (path) => utils.resolvePath(path);
+const shaders = createShaderController(mpv, resolvePath, Object.keys(shadersData));
+let currentEngine = engines[preferences.get("engine")] ? preferences.get("engine") : "anime4k";
+let savedEngines = preferences.get("engineSettings") || {};
+if (typeof savedEngines !== "object" || Array.isArray(savedEngines)) savedEngines = {};
+let selection = engineState(currentEngine, savedEngines[currentEngine] || {
+  quality: preferences.get("quality"), mode: preferences.get("mode"),
+});
 let autoApply = preferences.get("autoApply") !== false;
 let currentLang = preferences.get("lang") || "auto";
-
+let errorMessage = "";
+let firstMenuBuild = true;
+let sidebarLoaded = false;
 setLocale(currentLang);
 
+function installShaders() {
+  const marker = resolvePath("@data/shaders-version");
+  const complete = file.exists(marker) && file.read(marker, {}) === shadersVersion &&
+    Object.keys(shadersData).every((name) => file.exists(resolvePath(`@data/${name}`)));
+  if (complete) return;
+  for (const [name, content] of Object.entries(shadersData)) file.write(resolvePath(`@data/${name}`), content);
+  file.write(marker, shadersVersion);
+}
+
 function saveState() {
-  preferences.set("quality", currentQuality);
-  preferences.set("mode", currentMode);
+  savedEngines[currentEngine] = { ...selection };
+  preferences.set("engine", currentEngine);
+  preferences.set("engineSettings", savedEngines);
+  preferences.set("quality", selection.quality);
+  preferences.set("mode", selection.mode);
   preferences.set("autoApply", autoApply);
   preferences.set("lang", currentLang);
   preferences.sync();
 }
 
-function showOSD(text) {
-  core.osd(text);
-  
-  // Also send to overlay if it's visible, or just rely on core OSD.
-  // The plan called for an overlay, but IINA's core.osd is perfect for this.
-  // Let's use core.osd for simplicity and native feel.
-}
-
 function sendSidebarState() {
-  const state = {
-    mode: currentMode,
-    quality: currentQuality,
-    autoApply: autoApply,
-    lang: currentLang
-  };
-
-  console.log(`Anime4K sidebar: post state ${JSON.stringify(state)}`);
-  sidebar.postMessage(sidebarMessages.state, state);
-  sidebar.postMessage(legacySidebarMessages.state, state);
+  sidebar.postMessage(prefix + "state", {
+    engine: currentEngine, ...selection, autoApply, lang: currentLang, error: errorMessage,
+  });
 }
 
-function applyShader(mode, quality = currentQuality) {
+function refresh() {
+  rebuildMenus();
+  sendSidebarState();
+}
+
+function applySelection(id, mode, quality, announce = true) {
   try {
-    console.log(`Anime4K sidebar: applyShader ${mode} / ${quality}`);
-
-    if (mode === "off") {
-      mpv.command("change-list", ["glsl-shaders", "clr", ""]);
-      showOSD(t("osdOff"));
-      currentMode = "off";
-      saveState();
-      rebuildMenus();
-      sendSidebarState();
-      return true;
+    const engine = engines[id];
+    if (!engine || !engine.qualities.includes(quality) || (mode !== "off" && !engine.presets[quality][mode])) {
+      throw new Error("Invalid enhancement engine or preset");
     }
-
-    const shaderList = presets[quality] && presets[quality][mode];
-    if (!shaderList) {
-      throw new Error(`Invalid mode/quality: ${mode} / ${quality}`);
-    }
-
-    const paths = shaderList.map(s => utils.resolvePath(`@data/${s}`)).join(":");
-    mpv.command("change-list", ["glsl-shaders", "set", paths]);
-
-    const qualityText = quality === "hq" ? t("hq") : t("fast");
-    showOSD(t("osdMode", { mode: mode, quality: qualityText }));
-
-    currentMode = mode;
-    currentQuality = quality;
+    installShaders();
+    shaders.apply(mode === "off" ? [] : engine.presets[quality][mode]);
+    savedEngines[currentEngine] = { ...selection };
+    currentEngine = id;
+    selection = { mode, quality };
+    errorMessage = "";
     saveState();
-    rebuildMenus();
-    sendSidebarState();
+    if (announce) core.osd(mode === "off" ? t("osdOff") : `${engine.name}: ${mode} (${engine.qualityName(quality)})`);
+    refresh();
     return true;
   } catch (error) {
-    const message = error && error.message ? error.message : String(error);
-    console.error(`Anime4K: Failed to apply shader: ${message}`);
-    showOSD(t("osdFailed"));
+    errorMessage = error.message || String(error);
+    console.error(`AnimeEnhancer: ${errorMessage}`);
+    core.osd(t("osdFailed"));
     sendSidebarState();
     return false;
   }
 }
 
+function setEngine(id) {
+  if (!engines[id] || id === currentEngine) return;
+  const next = engineState(id, savedEngines[id]);
+  // Switching engines preserves the off state. Active playback selects the
+  // remembered preset for the new engine, or its default on first use.
+  const mode = selection.mode === "off" ? "off" : next.mode === "off" ? engines[id].defaultMode : next.mode;
+  applySelection(id, mode, next.quality);
+}
+
 function setQuality(quality) {
-  if (!presets[quality]) {
-    console.error(`Anime4K: Invalid quality tier: ${quality}`);
-    sendSidebarState();
-    return;
-  }
-
-  if (currentMode !== "off") {
-    applyShader(currentMode, quality);
-    return;
-  }
-
-  currentQuality = quality;
-  saveState();
-  rebuildMenus();
-  sendSidebarState();
+  applySelection(currentEngine, selection.mode, quality);
 }
 
 function setAutoApply(value) {
+  if (typeof value !== "boolean") return;
   autoApply = value;
   saveState();
-  rebuildMenus();
-  sendSidebarState();
+  refresh();
 }
 
-// 3. Menu System
-let firstMenuBuild = true;
-
 function setLang(lang) {
-  if (currentLang === lang && getLocale() === lang) return;
+  if (typeof lang !== "string") return;
   currentLang = lang;
   setLocale(lang);
   saveState();
-  rebuildMenus();
-  sendSidebarState();
+  refresh();
 }
 
 function rebuildMenus() {
-  if (!firstMenuBuild) {
-    menu.removeAllItems();
-  }
-
-  const localizedModes = getModes();
-  const bindings = ["1", "2", "3", "4", "5", "6"];
-
-  // Presets submenu
-  const presetSubMenu = menu.item(t("presetsMenu"));
-
-  const offMenu = menu.item(t("disableMenu"), () => applyShader("off"), { keyBinding: "0" });
-  offMenu.selected = (currentMode === "off");
-  presetSubMenu.addSubMenuItem(offMenu);
-  presetSubMenu.addSubMenuItem(menu.separator());
-
-  localizedModes.forEach((m, i) => {
-    const item = menu.item(`${m.name} (${m.desc})`, () => {
-      applyShader(m.id, currentQuality);
-    }, { keyBinding: bindings[i] });
-    item.selected = (currentMode === m.id);
-    presetSubMenu.addSubMenuItem(item);
+  if (!firstMenuBuild) menu.removeAllItems();
+  const engineMenu = menu.item(t("engine"));
+  Object.values(engines).forEach((engine) => {
+    const item = menu.item(engine.name, () => setEngine(engine.id));
+    item.selected = engine.id === currentEngine;
+    engineMenu.addSubMenuItem(item);
   });
-
-  // Quality submenu
+  const engine = engines[currentEngine];
+  const presetMenu = menu.item(t("presetsMenu"));
+  const off = menu.item(t("disableMenu"), () => applySelection(currentEngine, "off", selection.quality), { keyBinding: "0" });
+  off.selected = selection.mode === "off";
+  presetMenu.addSubMenuItem(off);
+  presetMenu.addSubMenuItem(menu.separator());
+  engine.modes().forEach((mode, index) => {
+    const options = engine.id === "anime4k" ? { keyBinding: String(index + 1) } : {};
+    const title = engine.id === "anime4k" ? `${mode.name} (${mode.desc})` : mode.name;
+    const item = menu.item(title, () => applySelection(currentEngine, mode.id, selection.quality), options);
+    item.selected = selection.mode === mode.id;
+    presetMenu.addSubMenuItem(item);
+  });
   const qualityMenu = menu.item(t("qualityTier"));
-  const fastQualityMenu = menu.item(t("fastMenu"), () => setQuality("fast"), { keyBinding: "7" });
-  fastQualityMenu.selected = (currentQuality === "fast");
-  const hqQualityMenu = menu.item(t("hqMenu"), () => setQuality("hq"), { keyBinding: "8" });
-  hqQualityMenu.selected = (currentQuality === "hq");
-  qualityMenu.addSubMenuItem(fastQualityMenu);
-  qualityMenu.addSubMenuItem(hqQualityMenu);
-
-  // Auto-apply toggle
-  const autoApplyMenu = menu.item(t("autoApplyMenu"), () => setAutoApply(!autoApply));
-  autoApplyMenu.selected = autoApply;
-
-  menu.addItem(presetSubMenu);
+  engine.qualities.forEach((quality, index) => {
+    const keyBinding = engine.id === "animejanai" ? String(index + 1) : String(index + 7);
+    const item = menu.item(engine.qualityName(quality), () => setQuality(quality), { keyBinding });
+    item.selected = selection.quality === quality;
+    qualityMenu.addSubMenuItem(item);
+  });
+  const autoMenu = menu.item(t("autoApplyMenu"), () => setAutoApply(!autoApply));
+  autoMenu.selected = autoApply;
+  menu.addItem(engineMenu);
+  menu.addItem(presetMenu);
   menu.addItem(qualityMenu);
-  menu.addItem(autoApplyMenu);
-
-  if (!firstMenuBuild) {
-    menu.forceUpdate();
-  }
+  menu.addItem(autoMenu);
+  if (!firstMenuBuild) menu.forceUpdate();
   firstMenuBuild = false;
-}
-
-rebuildMenus();
-
-// 4. Sidebar System
-let sidebarLoaded = false;
-let hasLoggedSidebarReady = false;
-
-function logSidebarReady(protocol) {
-  if (hasLoggedSidebarReady) return;
-  hasLoggedSidebarReady = true;
-  console.log(`Anime4K sidebar: received ${protocol} ready`);
-}
-
-function registerSidebarMessageHandlers() {
-  sidebar.onMessage(sidebarMessages.ready, () => {
-    logSidebarReady("modern");
-    sendSidebarState();
-  });
-
-  sidebar.onMessage(sidebarMessages.applyMode, (data) => {
-    console.log(`Anime4K sidebar: received applyMode ${data && data.mode}`);
-    applyShader(data.mode, currentQuality);
-  });
-
-  sidebar.onMessage(sidebarMessages.setQuality, (data) => {
-    console.log(`Anime4K sidebar: received setQuality ${data && data.quality}`);
-    setQuality(data.quality);
-  });
-
-  sidebar.onMessage(sidebarMessages.setAutoApply, (data) => {
-    console.log(`Anime4K sidebar: received setAutoApply ${data && data.autoApply}`);
-    setAutoApply(data.autoApply);
-  });
-
-  sidebar.onMessage("anime4k:setLang", (data) => {
-    console.log(`Anime4K sidebar: received setLang ${data && data.lang}`);
-    if (data && data.lang) {
-      setLang(data.lang);
-    }
-  });
-
-  sidebar.onMessage("setLang", (data) => {
-    console.log(`Anime4K sidebar: received legacy setLang ${data && data.lang}`);
-    if (data && data.lang) {
-      setLang(data.lang);
-    }
-  });
-
-  sidebar.onMessage(legacySidebarMessages.ready, () => {
-    logSidebarReady("legacy");
-    sendSidebarState();
-  });
-
-  sidebar.onMessage(legacySidebarMessages.apply, (data) => {
-    if (!data) return;
-    console.log(`Anime4K sidebar: received legacy apply ${JSON.stringify(data)}`);
-
-    if (data.mode === currentMode && data.quality && data.quality !== currentQuality) {
-      setQuality(data.quality);
-      return;
-    }
-
-    applyShader(data.mode, data.quality || currentQuality);
-  });
-
-  sidebar.onMessage(legacySidebarMessages.toggleAutoApply, (data) => {
-    if (!data) return;
-    console.log(`Anime4K sidebar: received legacy toggleAutoApply ${data.autoApply}`);
-    setAutoApply(data.autoApply);
-  });
 }
 
 function loadSidebar() {
   if (sidebarLoaded) return;
   sidebarLoaded = true;
+  // IINA clears sidebar message listeners when loading a page.
   sidebar.loadFile("dist/ui/sidebar/sidebar.html");
-  registerSidebarMessageHandlers();
+  sidebar.onMessage(prefix + "ready", sendSidebarState);
+  sidebar.onMessage(prefix + "setEngine", (data) => data && setEngine(data.engine));
+  sidebar.onMessage(prefix + "applyMode", (data) => data && applySelection(currentEngine, data.mode, selection.quality));
+  sidebar.onMessage(prefix + "setQuality", (data) => data && setQuality(data.quality));
+  sidebar.onMessage(prefix + "setAutoApply", (data) => data && setAutoApply(data.autoApply));
+  sidebar.onMessage(prefix + "setLang", (data) => data && setLang(data.lang));
 }
 
-if (core.window.loaded) {
-  loadSidebar();
-}
-
+rebuildMenus();
+if (core.window.loaded) loadSidebar();
 event.on("iina.window-loaded", loadSidebar);
-
-// 5. Auto Apply
 event.on("iina.file-loaded", () => {
-  // Defer to the next event-loop turn so IINA's native player/window
-  // lifecycle has fully settled before we touch menu proxies.
   setTimeout(() => {
-    if (autoApply && currentMode !== "off") {
-      // Re-apply the shader for the new file
-      applyShader(currentMode, currentQuality);
-    } else if (!autoApply && currentMode !== "off") {
-      mpv.command("change-list", ["glsl-shaders", "clr", ""]);
-      currentMode = "off";
-      saveState();
-      rebuildMenus();
-      sendSidebarState();
-    }
+    if (autoApply && selection.mode !== "off") applySelection(currentEngine, selection.mode, selection.quality, false);
+    else if (!autoApply) applySelection(currentEngine, "off", selection.quality, false);
   }, 0);
 });
-
-// 6. Global preferences synchronization
-if (iina.global && typeof iina.global.onMessage === "function") {
-  iina.global.onMessage("anime4k:setLang", (data) => {
-    console.log(`Anime4K global: received setLang ${data && data.lang}`);
-    if (data && data.lang) {
-      setLang(data.lang);
-    }
-  });
-  iina.global.onMessage("setLang", (data) => {
-    console.log(`Anime4K global: received legacy setLang ${data && data.lang}`);
-    if (data && data.lang) {
-      setLang(data.lang);
-    }
-  });
-}
-
-// Detect preference changes made in pref.html when window regains focus
 event.on("iina.window-main.changed", (isMain) => {
   if (!isMain) return;
   const storedLang = preferences.get("lang") || "auto";
-  if (storedLang !== currentLang) {
-    console.log(`Anime4K: preference lang changed from ${currentLang} to ${storedLang}`);
-    setLang(storedLang);
-  }
   const storedAutoApply = preferences.get("autoApply") !== false;
-  if (storedAutoApply !== autoApply) {
-    console.log(`Anime4K: preference autoApply changed from ${autoApply} to ${storedAutoApply}`);
-    setAutoApply(storedAutoApply);
+  if (storedLang !== currentLang || storedAutoApply !== autoApply) {
+    currentLang = storedLang;
+    autoApply = storedAutoApply;
+    setLocale(currentLang);
+    saveState();
+    refresh();
   }
 });
-
-console.log("Anime4K Plugin initialized.");
+console.log("AnimeEnhancer initialized.");

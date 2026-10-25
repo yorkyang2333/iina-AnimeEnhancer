@@ -1,92 +1,36 @@
-# Contributing to IINA Anime4K Plugin
+# Contributing to AnimeEnhancer
 
-Thank you for your interest in contributing to the `iina-anime4k` plugin! This document provides guidelines and instructions for developers and contributors to help build, test, and release the plugin.
+Use `npm ci`, `npm test` and `npm run pack` for normal development. Python 3 is used for shader bundling and the inherited multilingual preferences generator. When a local `.venv` or `venv` exists, the build uses its interpreter. Normal builds bundle the preconverted AnimeJaNai profile shaders from `AnimeJaNai/ports/mpv-glsl/shaders/`; ONNX conversion is an explicit maintenance operation.
 
----
+The engine registry in `src/engines.js` owns engine-specific presets, the official AnimeJaNai Quality/Balanced/Performance labels and defaults. Keep playback state in `src/index.js` and shader ownership in `src/shader-controller.js`. A successful change should preserve unrelated mpv shaders, keep separate engine selections, and leave the last successful selection intact if mpv rejects a shader-list update. IINA's JavaScript command bridge does not report GPU shader compilation errors; inspect mpv logs when verifying new shaders.
 
-## 1. Prerequisites & Development Setup
+The plugin identifier is `com.yorkyang2333.anime4k`, with updates sourced from `yorkyang2333/iina-anime4k`. Keep `version` consistent in `Info.json`, `package.json` and the lockfile. For subsequent releases, increment `ghVersion` by exactly one from its existing integer value. Build outputs (`dist/`, `src/shaders-data.js`, `generated/`, `.iinaplugin` and `.iinaplgz`) are ignored. The preconverted AnimeJaNai profile shaders are versioned model resources and is deliberately checked in so ordinary builds and playback never need ONNX conversion.
 
-To build and test the plugin locally, ensure you have the following installed on macOS:
-- **[IINA](https://iina.io/)**: macOS media player (latest stable version).
-- **[Node.js](https://nodejs.org/)**: v18+ and `npm`.
-- **Python 3**: For shader pre-compilation and locale preference generation.
+## Regenerating the AnimeJaNai resource
 
-### Initial Setup
-Clone the repository and install the Node dependencies:
-```bash
-git clone --recursive https://github.com/yorkyang2333/iina-anime4k.git
-cd iina-anime4k
-npm ci
+The converter intentionally supports the pinned, audited SPANF3 graph. Its checksum guard prevents silently interpreting a different preprocessing graph as this model. Updating the upstream model requires inspecting the graph, updating provenance, regenerating the shader and comparing the GPU result against ONNX Runtime.
+
+```sh
+python3.13 -m venv .venv
+.venv/bin/python -m pip install -r requirements-test.txt
+npm run convert:animejanai
 ```
 
----
+The converter accepts `--model`, `--metadata` and `--output` for use in the upstream fork. It packs four channels per RGBA texel, tiles channel groups spatially, and stores convolution weights in immutable float textures. It implements reflected padding for odd image dimensions, pixel unshuffle, zero-padded convolution, ReLU, addition, Tanh, multiplication, channel concatenation, pixel shuffle and final cropping. It does not approximate model layers with Anime4K shaders.
 
-## 2. Building & Testing Locally
+## Core ML feasibility result
 
-The plugin uses Parcel to bundle modern JavaScript and CSS, Python scripts to generate multilingual preference UI (`pref.html`), and pre-compile GLSL shaders into static data (`src/shaders-data.js`).
+ONNX Runtime 1.31 with the CoreMLExecutionProvider was also measured on the M1 with a static 1920×1080 input and 3840×2160 output. `ALL` measured 281 ms/frame and `CPUAndGPU` measured 279 ms/frame after warm-up, with 57 of 60 graph nodes assigned to Core ML and the remaining shape and transfer work on the CPU. This is the same order as the GLSL path, so Core ML is retained as a benchmark tool rather than an IINA playback backend. Core ML conversion through `coremltools 9` does not accept ONNX directly; a native host integration would require a separate conversion or model-authoring path.
 
-### Available NPM Scripts
-- `npm run build`: Compiles shaders (`build-shaders.py`), generates localization HTML (`generate-pref.py`), and bundles JavaScript/CSS into the `dist/` directory.
-- `npm run serve-sidebar`: Launches a local development server for live-reloading UI components during sidebar development.
-- `npm run pack`: Executes a full build and packages the artifact into `anime4k.iinaplugin` and `anime4k.iinaplgz` archives for release distribution.
+## Verifying model execution on macOS
 
-### How to Test in IINA
-1. Run `npm run build` or `npm run pack` locally.
-2. Open IINA, go to **Settings (偏好设置) -> Plugins (插件)**.
-3. Click **Install from local file... (安装本地插件)** and select the project directory or the generated `anime4k.iinaplugin` package.
-4. Enable the plugin and play a video to verify sidebar controls and OSD feedback.
+Install mpv headers (for example, `brew install mpv`) and use the actual target IINA app's libmpv. The following creates an offscreen OpenGL context, executes the shader through the same renderer API used by IINA, and compares the output to CPU ONNX Runtime. It does not install the plugin into IINA or modify IINA's configuration.
 
----
+```sh
+clang -Wno-deprecated-declarations -I "$(brew --prefix mpv)/include" tests/render-mpv.c -framework OpenGL /Applications/IINA.app/Contents/Frameworks/libmpv.2.dylib -Wl,-rpath,/Applications/IINA.app/Contents/Frameworks -o .venv/render-mpv
+.venv/bin/python tests/verify-animejanai.py
+```
 
-## 3. Core Architecture & File Organization
+The comparison covers even and odd dimensions and a larger 256×144 input, using normal half-float intermediate buffers. Results and renderer logs are written to `generated/`. This checks numerical correctness and shader compilation; it is not an HD real-time playback benchmark. `AJN_FBO_FORMAT=rgba32f` can be used to diagnose precision differences.
 
-- `src/index.js`: The main plugin runtime engine. Handles communication with IINA/mpv (`glsl-shaders`), menu bar synchronization, state persistence, and auto-apply rules.
-- `src/shaders.js`: Defines quality tiers (**Fast** vs **HQ**) and preset shader chains (**Mode A, B, C**, etc.).
-- `src/i18n.js`: Native 54-language localization dictionary and system locale matching engine.
-- `ui/sidebar/`: HTML/CSS/JS components displayed in IINA's sidebar tab.
-- `build-shaders.py`: Scans `Anime4K/glsl/` and generates `src/shaders-data.js`.
-- `generate-pref.py`: Generates the static multilingual preferences interface (`pref.html`).
-
----
-
-## 4. Versioning Conventions & Auto-Update (`ghVersion`)
-
-IINA uses specific metadata in `Info.json` to link repositories, author websites, and trigger online updates.
-
-### Two Distinct Version Fields
-1. **Semantic Version (`version`)**: The human-readable string defined in both `package.json` and `Info.json` (e.g., `"1.2.3"`).
-2. **Online Auto-Update Counter (`ghVersion`)**: A mandatory **integer** defined in `Info.json` representing the cumulative release count on GitHub. When checking for updates, IINA compares `ghVersion_remote > ghVersion_local`.
-
-### Critical Increment Rule for Pull Requests & Releases
-- Whenever releasing a new version, **you must increment `ghVersion` by exactly 1** (`new_ghVersion = current_ghVersion + 1`).
-- Never hardcode or reset `ghVersion` to match semantic strings (e.g., do not use string values or format like `123`).
-- Historical Baseline: Release `v1.2.2` corresponded to `"ghVersion": 5`, and `v1.2.3` corresponds to `"ghVersion": 6`.
-
----
-
-## 5. Why Build Artifacts Are Not Committed to Git
-
-When browsing the Git repository, you will notice that compiled directories and generated files (`dist/`, `pref.html`, `src/shaders-data.js`, `*.iinaplgz`) are listed in `.gitignore` and not tracked in version control.
-
-### Why?
-When end users update or install plugins from GitHub via IINA, IINA queries the GitHub API (`api.github.com/repos/yorkyang2333/iina-anime4k/releases/latest`) and **directly downloads the pre-compiled `.iinaplgz` binary asset attached to the GitHub Release**.
-
-Because our CI/CD GitHub Actions workflow (`.github/workflows/build.yml`) automatically compiles and uploads `anime4k.iinaplgz` on tag pushes, tracking minified build artifacts in Git is unnecessary. This keeps the Git history clean and lightweight for developers.
-
----
-
-## 6. Submitting Pull Requests & Cutting Releases
-
-### Pull Request Guidelines
-1. Ensure your code follows existing styling conventions and passes `npm run build`.
-2. Do not include build output files (`dist/`, etc.) in your commit.
-3. Write clear, descriptive commit messages.
-
-### Release Checklist (For Maintainers)
-1. Update `version` in `package.json` and `Info.json`.
-2. Increment `ghVersion` integer in `Info.json` by `1`.
-3. Add a new release section at the top of `CHANGELOG.md`.
-4. Commit changes: `git commit -m "chore(release): vX.Y.Z"`.
-5. Create tag: `git tag vX.Y.Z`.
-6. Push commit and tag: `git push origin main && git push origin vX.Y.Z`.
-7. GitHub Actions will automatically build and publish the release asset for IINA users!
+The inherited preferences page keeps a hidden text input proxy for the language selector, because IINA's preferences bridge does not persist `<select data-pref-key>` directly. Retain this pattern and the 54-locale coverage when editing `generate-pref.py`.

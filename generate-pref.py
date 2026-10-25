@@ -12,39 +12,39 @@ data = json.loads(trans_json)
 
 custom_help = {
     "en": {
-        "helpLang": "Select the display language for Anime4K OSD and side panel.",
+        "helpLang": "Select the display language for AnimeEnhancer OSD and side panel.",
         "helpAutoApply": "Automatically enable upscaling when opening new video files.",
     },
     "zh-Hans": {
-        "helpLang": "选择 Anime4K 屏幕提示 (OSD) 与控制台的显示语言。",
+        "helpLang": "选择 AnimeEnhancer 屏幕提示 (OSD) 与控制台的显示语言。",
         "helpAutoApply": "在播放新视频时自动加载上次的优化模式。",
     },
     "zh-Hant": {
-        "helpLang": "選擇 Anime4K 螢幕提示 (OSD) 與控制台的顯示語言。",
+        "helpLang": "選擇 AnimeEnhancer 螢幕提示 (OSD) 與控制台的顯示語言。",
         "helpAutoApply": "在播放新影片時自動載入上次的優化模式。",
     },
     "ja": {
-        "helpLang": "Anime4KのOSDおよびサイドパネルの表示言語を選択します。",
+        "helpLang": "AnimeEnhancerのOSDおよびサイドパネルの表示言語を選択します。",
         "helpAutoApply": "新しい動画ファイルを再生する際に自動的に高画質化を有効にします。",
     },
     "ko": {
-        "helpLang": "Anime4K OSD 및 사이드 패널의 표시 언어를 선택합니다.",
+        "helpLang": "AnimeEnhancer OSD 및 사이드 패널의 표시 언어를 선택합니다.",
         "helpAutoApply": "새 동영상을 재생할 때 자동으로 업스케일링을 활성화합니다.",
     },
     "es": {
-        "helpLang": "Seleccione el idioma de visualización para el OSD y el panel lateral de Anime4K.",
+        "helpLang": "Seleccione el idioma de visualización para el OSD y el panel lateral de AnimeEnhancer.",
         "helpAutoApply": "Habilitar automáticamente el escalado al abrir nuevos archivos de vídeo.",
     },
     "fr": {
-        "helpLang": "Sélectionnez la langue d'affichage pour l'OSD et le panneau latéral d'Anime4K.",
+        "helpLang": "Sélectionnez la langue d'affichage pour l'OSD et le panneau latéral d'AnimeEnhancer.",
         "helpAutoApply": "Activer automatiquement la mise à l'échelle lors de l'ouverture de nouvelles vidéos.",
     },
     "de": {
-        "helpLang": "Wählen Sie die Anzeigesprache für das Anime4K-OSD und das Seitenpanel.",
+        "helpLang": "Wählen Sie die Anzeigesprache für das AnimeEnhancer-OSD und das Seitenpanel.",
         "helpAutoApply": "Hochskalierung beim Öffnen neuer Videodateien automatisch aktivieren.",
     },
     "ru": {
-        "helpLang": "Выберите язык интерфейса для OSD и боковой панели Anime4K.",
+        "helpLang": "Выберите язык интерфейса для OSD и боковой панели AnimeEnhancer.",
         "helpAutoApply": "Автоматически включать масштабирование при открытии новых видеофайлов.",
     },
 }
@@ -147,7 +147,7 @@ html_content = f"""<!DOCTYPE html>
 
 <head>
   <meta charset="UTF-8" />
-  <title>Anime4K Preferences</title>
+  <title>AnimeEnhancer Preferences</title>
   <style>
     * {{
       box-sizing: border-box;
@@ -218,7 +218,7 @@ html_content = f"""<!DOCTYPE html>
   <div class="pref-section">
     <span id="lbl-lang" style="font-weight: 500;">Language:</span>
     <p class="small secondary pref-help" id="help-lang">
-      Select the display language for Anime4K OSD and side panel.
+      Select the display language for AnimeEnhancer OSD and side panel.
     </p>
     <div style="margin-top: 6px">
       <input type="text" id="pref-lang-input" data-pref-key="lang" style="display: none;" />
@@ -231,7 +231,7 @@ html_content = f"""<!DOCTYPE html>
   <div class="pref-section">
     <label>
       <input type="checkbox" data-type="bool" data-pref-key="autoApply" />
-      <span id="lbl-autoApply" style="font-weight: 500;">Auto-apply Anime4K on video load</span>
+      <span id="lbl-autoApply" style="font-weight: 500;">Auto-apply AnimeEnhancer on video load</span>
     </label>
     <p class="small secondary pref-help" id="help-autoApply" style="margin-left: 20px;">
       Automatically enable upscaling when opening new video files.

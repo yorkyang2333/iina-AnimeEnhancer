@@ -1,13 +1,14 @@
 {
-  "name": "anime4k",
-  "version": "1.2.5",
-  "description": "Soon to be deprecated. Please migrate to AnimeEnhancer for IINA: https://github.com/yorkyang2333/iina-AnimeEnhancer",
+  "name": "animeenhancer",
+  "version": "1.3.0",
+  "description": "Anime Enhancement Plugin for IINA",
   "main": "src/index.js",
   "scripts": {
     "serve-sidebar": "parcel serve ui/sidebar/sidebar.html --dist-dir dist/ui/sidebar",
-    "build": "rm -rf dist && python3 build-shaders.py && python3 generate-pref.py && parcel build .",
-    "pack": "npm run build && rm -rf anime4k.iinaplugin anime4k.iinaplgz && mkdir anime4k.iinaplugin && cp -r dist Info.json package.json pref.html anime4k.iinaplugin/ && cd anime4k.iinaplugin && zip -r ../anime4k.iinaplgz .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node scripts/build.cjs",
+    "pack": "npm run build && node scripts/pack.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "convert:animejanai": ".venv/bin/python scripts/compile-animejanai.py"
   },
   "author": "yorkyang2333 <yangyork097@gmail.com>",
   "repository": {
