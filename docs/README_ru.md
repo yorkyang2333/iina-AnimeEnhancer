@@ -1,4 +1,11 @@
-⚠️ **Скорое прекращение поддержки:** Anime4K for IINA скоро будет объявлен устаревшим. Перейдите на [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer), включающий Anime4K и экспериментальный движок AnimeJaNai. Установите [последнюю версию](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest), затем отключите или удалите старый плагин перед включением AnimeEnhancer, чтобы избежать конфликтов шейдеров. Новый плагин имеет отдельный идентификатор и требует отдельной установки и настройки.
+> [!WARNING]
+> ## ⚠️ Anime4K for IINA скоро будет объявлен устаревшим
+>
+> ### [➡️ Скачать AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)
+>
+> ⚠️ **Скорое прекращение поддержки:** Anime4K for IINA скоро будет объявлен устаревшим. Перейдите на [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer), включающий Anime4K и экспериментальный движок AnimeJaNai. Установите [последнюю версию](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest), затем отключите или удалите старый плагин перед включением AnimeEnhancer, чтобы избежать конфликтов шейдеров. Новый плагин имеет отдельный идентификатор и требует отдельной установки и настройки.
+
+---
 
 <div align="center">
 

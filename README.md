@@ -1,4 +1,11 @@
-⚠️ **Deprecation notice:** Anime4K for IINA will soon be deprecated. Please migrate to [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer), which includes Anime4K and the experimental AnimeJaNai engine. Install the [latest release](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest), then disable or uninstall this old plugin before enabling AnimeEnhancer to avoid conflicting shader control. AnimeEnhancer uses a separate plugin identifier; install it separately and configure your preferences again.
+> [!WARNING]
+> ## ⚠️ Anime4K for IINA will soon be deprecated
+>
+> ### [➡️ Get AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)
+>
+> ⚠️ **Deprecation notice:** Anime4K for IINA will soon be deprecated. Please migrate to [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer), which includes Anime4K and the experimental AnimeJaNai engine. Install the [latest release](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest), then disable or uninstall this old plugin before enabling AnimeEnhancer to avoid conflicting shader control. AnimeEnhancer uses a separate plugin identifier; install it separately and configure your preferences again.
+
+---
 
 <div align="center">
 

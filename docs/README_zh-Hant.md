@@ -1,4 +1,11 @@
-⚠️ **即將棄用：** Anime4K for IINA 即將 deprecated，請遷移至 [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer)。新外掛包含 Anime4K 與實驗性的 AnimeJaNai 引擎。安裝[最新版本](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)後，請先停用或解除安裝舊外掛，再啟用 AnimeEnhancer，避免著色器控制衝突。新外掛使用獨立識別碼，需要另外安裝並重新設定偏好。
+> [!WARNING]
+> ## ⚠️ Anime4K for IINA 即將棄用
+>
+> ### [➡️ 下載 AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)
+>
+> ⚠️ **即將棄用：** Anime4K for IINA 即將 deprecated，請遷移至 [AnimeEnhancer for IINA](https://github.com/yorkyang2333/iina-AnimeEnhancer)。新外掛包含 Anime4K 與實驗性的 AnimeJaNai 引擎。安裝[最新版本](https://github.com/yorkyang2333/iina-AnimeEnhancer/releases/latest)後，請先停用或解除安裝舊外掛，再啟用 AnimeEnhancer，避免著色器控制衝突。新外掛使用獨立識別碼，需要另外安裝並重新設定偏好。
+
+---
 
 <div align="center">
 
